@@ -48,8 +48,13 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "找不到 /sdcard/letsvpn.apk", Toast.LENGTH_SHORT).show();
                 return;
             }
-            FCore.get().installPackageAsUser(apk, USER_ID);
-            Toast.makeText(this, "安装完成", Toast.LENGTH_SHORT).show();
+            com.fvbox.lib.common.pm.InstallResult result = FCore.get().installPackageAsUser(apk, USER_ID);
+            if (result != null && result.getSuccess()) {
+                Toast.makeText(this, "安装成功: " + result.getPackageName(), Toast.LENGTH_SHORT).show();
+            } else {
+                String msg = result != null ? result.getMsg() : "null result";
+                Toast.makeText(this, "安装失败: " + msg, Toast.LENGTH_LONG).show();
+            }
             updateStatus(tv);
         });
 
