@@ -43,9 +43,23 @@ public class MainActivity extends AppCompatActivity {
         updateStatus(tv);
 
         btnInstall.setOnClickListener(v -> {
-            File apk = new File("/sdcard/letsvpn.apk");
-            if (!apk.exists()) {
+            File src = new File("/sdcard/letsvpn.apk");
+            if (!src.exists()) {
                 Toast.makeText(this, "找不到 /sdcard/letsvpn.apk", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // 复制到 app 私有目录，确保沙盒可读
+            File apk = new File(getFilesDir(), "letsvpn.apk");
+            try {
+                java.io.FileInputStream in = new java.io.FileInputStream(src);
+                java.io.FileOutputStream out = new java.io.FileOutputStream(apk);
+                byte[] buf = new byte[8192];
+                int len;
+                while ((len = in.read(buf)) > 0) out.write(buf, 0, len);
+                in.close();
+                out.close();
+            } catch (Exception e) {
+                Toast.makeText(this, "复制失败: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 return;
             }
             com.fvbox.lib.common.pm.InstallResult result = FCore.get().installPackageAsUser(apk, USER_ID);
