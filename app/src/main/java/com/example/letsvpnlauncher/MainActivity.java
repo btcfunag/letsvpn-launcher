@@ -6,7 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.FSpaceCore.FCore;
+import com.fvbox.lib.FCore;
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             FCore.get().installPackageAsUser(apk, USER_ID);
-            Toast.makeText(this, "安装中...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "安装完成", Toast.LENGTH_SHORT).show();
             updateStatus(tv);
         });
 
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btnClear.setOnClickListener(v -> {
-            FCore.get().clearPackage(PKG);
+            FCore.get().clearPackage(PKG, USER_ID);
             Toast.makeText(this, "数据已清除", Toast.LENGTH_SHORT).show();
             updateStatus(tv);
         });
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateStatus(TextView tv) {
         boolean installed = FCore.get().isInstalled(PKG, USER_ID);
-        tv.setText("letsvpn 状态: " + (installed ? "✓ 已安装" : "✗ 未安装") + "\n\n"
+        tv.setText("letsvpn 状态: " + (installed ? "已安装" : "未安装") + "\n\n"
                 + "步骤：\n1. 把 letsvpn.apk 放到 /sdcard/letsvpn.apk\n"
                 + "2. 点安装\n3. 点启动\n\n"
                 + "已开启：hideRoot + hideVPN");

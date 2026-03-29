@@ -22,8 +22,8 @@
         </activity>
 
         <provider
-            android:name="com.FSpaceCore.core.CoreProvider"
-            android:authorities="${applicationId}.spaceprovider"
+            android:name="com.fvbox.lib.system.FSystemProvider"
+            android:authorities="${applicationId}.SystemManagerProvider"
             android:exported="false"/>
 
     </application>

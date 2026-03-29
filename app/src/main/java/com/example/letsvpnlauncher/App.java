@@ -2,7 +2,7 @@ package com.example.letsvpnlauncher;
 
 import android.app.Application;
 import android.content.Context;
-import com.FSpaceCore.FCore;
+import com.fvbox.lib.FCore;
 
 public class App extends Application {
 
@@ -10,8 +10,6 @@ public class App extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         FCore.get().init(this);
-        FCore.get().setAllowSystemInteraction(true);
-        FCore.get().setAutoPreloadApplication(true);
         FCore.get().setHideRoot(true);
         FCore.get().setHideVPN(true);
     }
