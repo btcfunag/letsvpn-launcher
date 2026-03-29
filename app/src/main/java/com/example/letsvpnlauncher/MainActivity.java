@@ -43,13 +43,15 @@ public class MainActivity extends AppCompatActivity {
         updateStatus(tv);
 
         btnInstall.setOnClickListener(v -> {
-            File src = new File("/sdcard/letsvpn.apk");
+            // 从 app 外部存储目录读取（无需特殊权限）
+            // 用户需把 letsvpn.apk 放到 /sdcard/Android/data/com.example.letsvpnlauncher/files/letsvpn.apk
+            File extDir = getExternalFilesDir(null);
+            File src = new File(extDir, "letsvpn.apk");
+            File apk = new File(getFilesDir(), "letsvpn.apk");
             if (!src.exists()) {
-                Toast.makeText(this, "找不到 /sdcard/letsvpn.apk", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "找不到 APK，请把 letsvpn.apk 放到:\n" + src.getAbsolutePath(), Toast.LENGTH_LONG).show();
                 return;
             }
-            // 复制到 app 私有目录，确保沙盒可读
-            File apk = new File(getFilesDir(), "letsvpn.apk");
             try {
                 java.io.FileInputStream in = new java.io.FileInputStream(src);
                 java.io.FileOutputStream out = new java.io.FileOutputStream(apk);
@@ -89,8 +91,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateStatus(TextView tv) {
         boolean installed = FCore.get().isInstalled(PKG, USER_ID);
+        File extDir = getExternalFilesDir(null);
         tv.setText("letsvpn 状态: " + (installed ? "已安装" : "未安装") + "\n\n"
-                + "步骤：\n1. 把 letsvpn.apk 放到 /sdcard/letsvpn.apk\n"
+                + "步骤：\n1. 把 letsvpn.apk 放到:\n   " + extDir.getAbsolutePath() + "/letsvpn.apk\n"
                 + "2. 点安装\n3. 点启动\n\n"
                 + "已开启：hideRoot + hideVPN");
     }
